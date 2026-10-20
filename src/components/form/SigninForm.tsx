@@ -6,10 +6,19 @@ import { Field, FieldError, FieldLabel } from "../ui/field";
 import { userSignInSchema } from "@/validation";
 import { useState } from "react";
 import { EyeClosed, EyeIcon } from "lucide-react";
+import { useSignin } from "@/hooks";
+import { useRouter } from "next/navigation";
+import { toast } from "../ui/toast";
+import { Spinner } from "../ui/spinner";
 
 const SigninForm = () => {
   // -----pass show state
   const [showPass, setShowPass] = useState(false);
+  // -----router
+  const router = useRouter();
+
+  // -----tanstack query data destracture
+  const { mutate: signIn, isPending: signinPending } = useSignin();
 
   // ------tanstack form
   const form = useForm({
@@ -21,7 +30,28 @@ const SigninForm = () => {
       onSubmit: userSignInSchema,
     },
     onSubmit: (data) => {
-      console.log(data.value);
+      const loginData = {
+        email: data.value.email,
+        password: data.value.password,
+      };
+
+      signIn(loginData, {
+        onSuccess: (res) => {
+          toast.add({
+            title: "SignIn successfull",
+            description: "Welcome Back",
+            type: "success",
+          });
+          router.push("/");
+        },
+        onError: (err) => {
+          toast.add({
+            title: "Authorization failed",
+            description: "Something Went Wrong",
+            type: "error",
+          });
+        },
+      });
     },
   });
 
@@ -97,7 +127,15 @@ const SigninForm = () => {
           }}
         </form.Field>
 
-        <Button type="submit">Submit</Button>
+        <Button disabled={signinPending} type="submit">
+          {signinPending ? (
+            <>
+              Submitting.. <Spinner />
+            </>
+          ) : (
+            "Submit"
+          )}
+        </Button>
       </form>
     </div>
   );
