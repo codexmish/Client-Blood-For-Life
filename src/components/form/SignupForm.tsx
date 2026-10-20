@@ -21,6 +21,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { toast } from "../ui/toast";
+import Link from "next/link";
 
 const SignupForm = () => {
   // -----pass show state
@@ -85,8 +86,22 @@ const SignupForm = () => {
   });
 
   return (
-    <div>
+    <div className="flex flex-col gap-6 rounded-[20px] border border-[#E3E5EA] bg-white p-6 sm:p-8">
+      {/* -------------heading */}
+      <div className="flex flex-col gap-1.5">
+        <span className="text-[13px] font-bold tracking-[0.05em] text-[#8E1A20]">
+          STEP 1 OF 2
+        </span>
+        <h1 className="text-[28px] font-bold leading-tight tracking-tight text-[#15171C]">
+          Create your account
+        </h1>
+        <p className="text-[15px] text-[#5B616E]">
+          We will email you a 6-digit code.
+        </p>
+      </div>
+
       <form
+        className="flex flex-col gap-[18px]"
         onSubmit={(e) => {
           e.preventDefault();
           form.handleSubmit();
@@ -104,7 +119,7 @@ const SignupForm = () => {
                   htmlFor={field.name}
                   className="text-sm font-semibold text-[#15171C]"
                 >
-                  Name
+                  Full name
                 </FieldLabel>
                 <Input
                   id={field.name}
@@ -113,69 +128,9 @@ const SignupForm = () => {
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   autoComplete="off"
-                  placeholder="you@example.com"
+                  placeholder="Rahim Uddin"
                   className={`h-[46px] rounded-[10px] border-[#D5D8DE] bg-white px-3 text-[15px] text-[#15171C] placeholder:text-[#8A909B] focus-visible:border-[#B4232A] focus-visible:ring-[#B4232A]/20 md:text-[15px] ${isValid ? "border-red-500" : ""}`}
                 />
-                {isValid && (
-                  <FieldError
-                    className="text-[13px]"
-                    errors={field.state.meta.errors}
-                  />
-                )}
-              </Field>
-            );
-          }}
-        </form.Field>
-
-        {/* -------------Blood Group */}
-        <form.Field name="bloodGroup">
-          {(field) => {
-            const isValid =
-              field.state.meta.isTouched && !field.state.meta.isValid;
-
-            return (
-              <Field className="gap-1.5">
-                <FieldLabel
-                  htmlFor={field.name}
-                  className="text-sm font-semibold text-[#15171C]"
-                >
-                  Blood Group
-                </FieldLabel>
-
-                <Select
-                  items={bloodGroupItems}
-                  name={field.name}
-                  onValueChange={(value) =>
-                    field.handleChange(value as BloodGroupList)
-                  }
-                  value={field.state.value}
-                  autoComplete="off"
-                >
-                  <SelectTrigger className="w-full max-w-48">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectGroup>
-                      <SelectLabel>Fruits</SelectLabel>
-                      {bloodGroupItems.map((item) => (
-                        <SelectItem key={item.value} value={item.value}>
-                          {item.label}
-                        </SelectItem>
-                      ))}
-                    </SelectGroup>
-                  </SelectContent>
-                </Select>
-
-                {/* <Input
-                  id={field.name}
-                  name={field.name}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  autoComplete="off"
-                  placeholder="you@example.com"
-                  className={`h-[46px] rounded-[10px] border-[#D5D8DE] bg-white px-3 text-[15px] text-[#15171C] placeholder:text-[#8A909B] focus-visible:border-[#B4232A] focus-visible:ring-[#B4232A]/20 md:text-[15px] ${isValid ? "border-red-500" : ""}`}
-                /> */}
                 {isValid && (
                   <FieldError
                     className="text-[13px]"
@@ -222,6 +177,64 @@ const SignupForm = () => {
           }}
         </form.Field>
 
+        {/* -------------Blood Group */}
+        <form.Field name="bloodGroup">
+          {(field) => {
+            const isValid =
+              field.state.meta.isTouched && !field.state.meta.isValid;
+
+            return (
+              <Field className="gap-1.5">
+                <FieldLabel
+                  htmlFor={field.name}
+                  className="text-sm font-semibold text-[#15171C]"
+                >
+                  Blood group
+                </FieldLabel>
+
+                <Select
+                  items={bloodGroupItems}
+                  name={field.name}
+                  onValueChange={(value) =>
+                    field.handleChange(value as BloodGroupList)
+                  }
+                  value={field.state.value}
+                  autoComplete="off"
+                >
+                  <SelectTrigger
+                    className={`h-[46px] w-full rounded-[10px] border-[#D5D8DE] bg-white px-3 text-[15px] text-[#15171C] focus-visible:border-[#B4232A] focus-visible:ring-[#B4232A]/20 data-placeholder:text-[#8A909B] data-[size=default]:h-[46px] [&_svg]:size-[18px] ${isValid ? "border-red-500" : ""}`}
+                  >
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-xl border border-[#E3E5EA] bg-white p-1">
+                    <SelectGroup>
+                      <SelectLabel className="px-2 py-1.5 text-xs font-semibold text-[#5B616E]">
+                        Blood group
+                      </SelectLabel>
+                      {bloodGroupItems.map((item) => (
+                        <SelectItem
+                          key={item.value}
+                          value={item.value}
+                          className="min-h-10 rounded-lg px-2.5 text-[15px] text-[#15171C] data-highlighted:bg-[#FBEAEA] data-highlighted:text-[#8E1A20]"
+                        >
+                          {item.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+
+                {isValid && (
+                  <FieldError
+                    className="text-[13px]"
+                    errors={field.state.meta.errors}
+                  />
+                )}
+              </Field>
+            );
+          }}
+        </form.Field>
+
         {/* ----------password */}
         <form.Field name="password">
           {(field) => {
@@ -244,7 +257,7 @@ const SignupForm = () => {
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     autoComplete="off"
-                    placeholder="Your password"
+                    placeholder="8–32 characters"
                     className={`h-[46px] rounded-[10px] border-[#D5D8DE] bg-white pl-3 pr-12 text-[15px] text-[#15171C] placeholder:text-[#8A909B] focus-visible:border-[#B4232A] focus-visible:ring-[#B4232A]/20 md:text-[15px] ${isValid ? "border-red-500" : ""}`}
                     type={showPass ? "text" : "password"}
                   />
@@ -280,13 +293,24 @@ const SignupForm = () => {
         >
           {signupPending ? (
             <>
-              Signing up <Spinner />
+              Sending code <Spinner />
             </>
           ) : (
-            "Sign up"
+            "Send verification code"
           )}
         </Button>
       </form>
+
+      {/* -------------footer */}
+      <p className="text-center text-sm text-[#5B616E]">
+        Already registered?{" "}
+        <Link
+          href="/signin"
+          className="font-semibold text-[#B4232A] hover:text-[#8E1A20]"
+        >
+          Sign in
+        </Link>
+      </p>
     </div>
   );
 };
