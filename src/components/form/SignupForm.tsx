@@ -72,7 +72,9 @@ const SignupForm = () => {
             type: "success",
           });
 
-          router.push("/otp-verify");
+          router.push(
+            `/otp-verify?email=${encodeURIComponent(data.value.email)}`,
+          );
         },
         onError: (err) => {
           toast.add({
