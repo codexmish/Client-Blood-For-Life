@@ -22,20 +22,18 @@ export function useOtpVerify() {
   });
 }
 
-
 // -----get me
-export function useGetMe(){
-    return useQuery({
-        queryKey: ["user"],
-        queryFn: getMe,
-        retry: false
-    })
-  }
+export function useGetMe() {
+  return useQuery({
+    queryKey: ["user"],
+    queryFn: getMe,
+    retry: false,
+  });
+}
 
-
-  // -------logout
-export function useLogout(){
-    return useMutation({
-        mutationFn: userLogout
-    })
+// -------logout
+export function useLogout() {
+  return useMutation({
+    mutationFn: userLogout,
+  });
 }

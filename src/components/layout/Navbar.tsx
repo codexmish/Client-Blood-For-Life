@@ -33,7 +33,7 @@ const Navbar = () => {
 
   // -----user info for showing
   const user = userData?.data;
-  
+
   const isDonor = !!user?.donor;
   const menuLinks = user ? (isDonor ? donorLinks : recipientLinks) : navLinks;
   const initials = user?.name

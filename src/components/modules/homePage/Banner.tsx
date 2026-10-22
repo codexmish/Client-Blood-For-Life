@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useGetMe, usePublicDonation } from "@/hooks";
 import { IPublicDonation } from "@/types";
@@ -16,19 +16,17 @@ const bloodGroupLabel: Record<string, string> = {
   O_NEGATIVE: "O−",
 };
 
-
-
 const Banner = () => {
+  // -----getting user data
+  const { data: publicDonation, isLoading: publicDonationLoading } =
+    usePublicDonation();
 
-    // -----getting user data
-      const { data: publicDonation, isLoading: publicDonationLoading } = usePublicDonation()
+  const donationData: IPublicDonation[] = publicDonation?.data ?? [];
 
-      const donationData: IPublicDonation[] = publicDonation?.data ?? []
+  // -----checking login
+  const { data: userData, isLoading: userDataLoading } = useGetMe();
+  const user = userData?.data;
 
-    // -----checking login
-      const { data: userData, isLoading: userDataLoading } = useGetMe()
-      const user = userData?.data
-      
   return (
     <section className="mx-auto flex max-w-[1200px] flex-wrap items-center gap-12 px-4 py-12 sm:px-6 md:py-[72px]">
       {/* ------left side text */}
