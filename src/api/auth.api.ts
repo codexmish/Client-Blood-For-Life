@@ -15,3 +15,16 @@ export function userSignUp(payload: ISignup) {
 export function userVerify(payload: IOtpVerify) {
   return apiClient("/auth/otp-verify", { method: "POST", body: payload });
 }
+
+// ----get me
+export const getMe = () => {
+  return apiClient("/auth/me");
+};
+
+
+// -----logout
+export const userLogout = () => {
+  return apiClient("/auth/logout", {
+    method: "POST",
+  });
+};
