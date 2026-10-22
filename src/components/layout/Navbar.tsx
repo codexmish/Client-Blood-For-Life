@@ -5,6 +5,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { toast } from "../ui/toast";
 import { LogOut } from "lucide-react";
+import { Menu } from "@base-ui/react/menu";
 
 // -----menu items
 const navLinks = [
@@ -32,6 +33,7 @@ const Navbar = () => {
 
   // -----user info for showing
   const user = userData?.data;
+  
   const isDonor = !!user?.donor;
   const menuLinks = user ? (isDonor ? donorLinks : recipientLinks) : navLinks;
   const initials = user?.name
@@ -127,32 +129,68 @@ const Navbar = () => {
                 Become a donor
               </Link>
             )}
-            <Link
-              href={isDonor ? "/dashboard" : "/profile"}
-              aria-label="Your account"
-              className="inline-flex size-11 items-center justify-center overflow-hidden rounded-full bg-[#15171C] text-[15px] font-bold text-white"
-            >
-              {user.avater ? (
-                <img
-                  src={user.avater}
-                  alt=""
-                  className="size-full object-cover"
-                />
-              ) : (
-                initials
-              )}
-            </Link>
+            {/* -----avatar menu */}
+            <Menu.Root>
+              <Menu.Trigger
+                aria-label="Your account"
+                className="inline-flex size-11 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-[#15171C] text-[15px] font-bold text-white outline-none transition-shadow focus-visible:ring-3 focus-visible:ring-[#B4232A]/30 data-popup-open:ring-3 data-popup-open:ring-[#B4232A]/30"
+              >
+                {user.avater ? (
+                  <img
+                    src={user.avater}
+                    alt=""
+                    className="size-full object-cover"
+                  />
+                ) : (
+                  initials
+                )}
+              </Menu.Trigger>
 
-            {/* -----logout button */}
-            <button
-              type="button"
-              onClick={handleLogout}
-              aria-label="Log out"
-              className="inline-flex h-11 min-w-11 cursor-pointer items-center justify-center gap-2 rounded-[10px] border border-[#E6B7B9] bg-white px-3 text-[15px] font-semibold text-[#8E1A20] transition-colors hover:bg-[#FBEAEA] sm:px-4"
-            >
-              <LogOut className="size-[18px]" />
-              <span className="hidden sm:inline">Log out</span>
-            </button>
+              <Menu.Portal>
+                <Menu.Positioner
+                  side="bottom"
+                  align="end"
+                  sideOffset={8}
+                  className="z-50"
+                >
+                  <Menu.Popup className="w-64 origin-(--transform-origin) rounded-2xl border border-[#E3E5EA] bg-white p-2 shadow-[0_12px_32px_-12px_rgba(21,23,28,0.25)] outline-none transition-[opacity,scale] duration-150 data-ending-style:scale-95 data-ending-style:opacity-0 data-starting-style:scale-95 data-starting-style:opacity-0">
+                    {/* -----name and role */}
+                    <div className="flex items-center gap-3 px-2.5 pb-3 pt-2">
+                      <span className="inline-flex size-11 shrink-0 items-center justify-center overflow-hidden rounded-full bg-[#15171C] text-[15px] font-bold text-white">
+                        {user.avater ? (
+                          <img
+                            src={user.avater}
+                            alt=""
+                            className="size-full object-cover"
+                          />
+                        ) : (
+                          initials
+                        )}
+                      </span>
+                      <div className="flex min-w-0 flex-col gap-1">
+                        <span className="truncate text-[15px] font-semibold text-[#15171C]">
+                          {user.name}
+                        </span>
+                        <span className="inline-flex w-fit items-center rounded-full bg-[#FBEAEA] px-2.5 py-0.5 text-[11px] font-bold tracking-[0.04em] text-[#8E1A20]">
+                          {user.role?.replace("_", " ")}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="-mx-2 h-px bg-[#E3E5EA]" />
+
+                    {/* -----logout */}
+                    <Menu.Item
+                      onClick={handleLogout}
+                      className="mt-2 flex min-h-11 cursor-pointer items-center gap-2.5 rounded-[10px] px-2.5 text-[15px] font-semibold text-[#8E1A20] outline-none transition-colors data-highlighted:bg-[#FBEAEA]"
+                    >
+                      <LogOut className="size-[18px]" />
+                      Log out
+                    </Menu.Item>
+                  </Menu.Popup>
+                </Menu.Positioner>
+              </Menu.Portal>
+            </Menu.Root>
           </div>
         ) : (
           // -----before login
