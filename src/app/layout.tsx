@@ -5,9 +5,7 @@ import { cn } from "@/lib/utils";
 import Providers from "@/providers";
 import { Toaster } from "@/components/ui/toast";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'});
-
-
+const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
   title: "Blood For Life",
@@ -21,10 +19,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={cn("h-full", "antialiased", "font-sans", inter.variable)}
     >
       <Providers>
-
-      <body className="min-h-full flex flex-col">
-        {children}
-        <Toaster/>
+        <body className="min-h-full flex flex-col">
+          {children}
+          <Toaster />
         </body>
       </Providers>
     </html>

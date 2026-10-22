@@ -9,25 +9,24 @@ export enum BloodGroupList {
   O_NEGATIVE = "O_NEGATIVE",
 }
 
-
 export interface ISignup {
-	name: string;
-	email: string;
-	bloodGroup: BloodGroupList;
-	password: string;
+  name: string;
+  email: string;
+  bloodGroup: BloodGroupList;
+  password: string;
 }
 
 export interface IOtpVerify {
-	email: string;
-	otp: string;
+  email: string;
+  otp: string;
 }
 
 export interface ISignIn {
-	email: string;
-	password: string;
+  email: string;
+  password: string;
 }
 
 export interface IOtpVerify {
-	email: string;
-	otp: string;
+  email: string;
+  otp: string;
 }

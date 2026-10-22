@@ -9,7 +9,13 @@ const SignInPage = () => {
         href="/"
         className="mb-10 flex items-center gap-2.5 text-[21px] font-bold tracking-tight text-[#15171C]"
       >
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <svg
+          width="28"
+          height="28"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
           <path
             d="M12 2.5C12 2.5 5 10.2 5 15a7 7 0 0 0 14 0c0-4.8-7-12.5-7-12.5Z"
             fill="#B4232A"

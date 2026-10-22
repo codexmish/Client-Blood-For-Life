@@ -1,11 +1,7 @@
 import { otpVerifySchema } from "@/validation";
 import { useForm } from "@tanstack/react-form";
 import { Field, FieldError, FieldLabel } from "../ui/field";
-import {
-  InputOTP,
-  InputOTPGroup,
-  InputOTPSlot,
-} from "../ui/input-otp";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 import { Button } from "../ui/button";
 import { IOtpVerify } from "@/types";
 import { useRouter, useSearchParams } from "next/navigation";
