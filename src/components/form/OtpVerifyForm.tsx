@@ -4,7 +4,6 @@ import { Field, FieldError, FieldLabel } from "../ui/field";
 import {
   InputOTP,
   InputOTPGroup,
-  InputOTPSeparator,
   InputOTPSlot,
 } from "../ui/input-otp";
 import { Button } from "../ui/button";
@@ -13,6 +12,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useOtpVerify } from "@/hooks";
 import { toast } from "../ui/toast";
 import { Spinner } from "../ui/spinner";
+import Link from "next/link";
 
 const OtpVerifyForm = () => {
   // -----getting eamil from params
@@ -39,7 +39,6 @@ const OtpVerifyForm = () => {
         email: otpEmail as string,
         otp: data.value.otp,
       };
-      console.log(verifyData);
       verify(verifyData, {
         onSuccess: (res) => {
           toast.add({
@@ -62,8 +61,26 @@ const OtpVerifyForm = () => {
   });
 
   return (
-    <div>
+    <div className="flex flex-col gap-6 rounded-[20px] border border-[#E3E5EA] bg-white p-6 sm:p-8">
+      {/* -------------heading */}
+      <div className="flex flex-col gap-1.5">
+        <span className="text-[13px] font-bold tracking-[0.05em] text-[#8E1A20]">
+          STEP 2 OF 2
+        </span>
+        <h1 className="text-[28px] font-bold leading-tight tracking-tight text-[#15171C]">
+          Check your email
+        </h1>
+        <p className="text-[15px] text-[#5B616E]">
+          Enter the 6-digit code we sent to{" "}
+          <strong className="break-words font-semibold text-[#15171C]">
+            {otpEmail}
+          </strong>
+          .
+        </p>
+      </div>
+
       <form
+        className="flex flex-col gap-[18px]"
         onSubmit={(e) => {
           e.preventDefault();
           form.handleSubmit();
@@ -74,9 +91,18 @@ const OtpVerifyForm = () => {
           {(field) => {
             const isValid =
               field.state.meta.isTouched && !field.state.meta.isValid;
+
+            // -----same style for all 6 boxes
+            const slotClass = `h-14 w-auto flex-1 rounded-[12px] border border-[#D5D8DE] bg-white text-2xl font-bold text-[#15171C] first:rounded-[12px] first:border-l last:rounded-[12px] data-[active=true]:border-[#B4232A] data-[active=true]:ring-3 data-[active=true]:ring-[#B4232A]/20 sm:h-[60px] ${isValid ? "border-red-500" : ""}`;
+
             return (
-              <Field>
-                <FieldLabel htmlFor={field.name}>OTP</FieldLabel>
+              <Field className="gap-1.5">
+                <FieldLabel
+                  htmlFor={field.name}
+                  className="text-sm font-semibold text-[#15171C]"
+                >
+                  Verification code
+                </FieldLabel>
                 <InputOTP
                   maxLength={6}
                   id={field.name}
@@ -85,17 +111,15 @@ const OtpVerifyForm = () => {
                   value={field.state.value}
                   onBlur={field.handleBlur}
                   autoComplete="off"
+                  containerClassName="w-full"
                 >
-                  <InputOTPGroup>
-                    <InputOTPSlot index={0} />
-                    <InputOTPSlot index={1} />
-                    <InputOTPSlot index={2} />
-                  </InputOTPGroup>
-                  <InputOTPSeparator />
-                  <InputOTPGroup>
-                    <InputOTPSlot index={3} />
-                    <InputOTPSlot index={4} />
-                    <InputOTPSlot index={5} />
+                  <InputOTPGroup className="w-full gap-2">
+                    <InputOTPSlot index={0} className={slotClass} />
+                    <InputOTPSlot index={1} className={slotClass} />
+                    <InputOTPSlot index={2} className={slotClass} />
+                    <InputOTPSlot index={3} className={slotClass} />
+                    <InputOTPSlot index={4} className={slotClass} />
+                    <InputOTPSlot index={5} className={slotClass} />
                   </InputOTPGroup>
                 </InputOTP>
 
@@ -118,13 +142,24 @@ const OtpVerifyForm = () => {
         >
           {verifyPending ? (
             <>
-              Verifing <Spinner />
+              Verifying <Spinner />
             </>
           ) : (
-            "Verify"
+            "Verify and continue"
           )}
         </Button>
       </form>
+
+      {/* -------------footer */}
+      <p className="text-center text-sm text-[#5B616E]">
+        Wrong email?{" "}
+        <Link
+          href="/signup"
+          className="font-semibold text-[#B4232A] hover:text-[#8E1A20]"
+        >
+          Sign up again
+        </Link>
+      </p>
     </div>
   );
 };
