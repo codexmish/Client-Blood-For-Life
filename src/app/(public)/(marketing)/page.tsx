@@ -8,10 +8,10 @@ const HomePage = () => {
   return (
     <div>
       <Banner />
-      <FindDonor/>
-      <Works/>
-      <RecentDonations/>
-      <CanYouDonate/>
+      <FindDonor />
+      <Works />
+      <RecentDonations />
+      <CanYouDonate />
     </div>
   );
 };
