@@ -1,6 +1,7 @@
 import {
   createBloodRequest,
   getBloodRequests,
+  getMyBloodRequests,
   getSingleBloodRequest,
   updateBloodRequest,
   updateRequestStatus,
@@ -32,6 +33,7 @@ export function useUpdateBloodRequest() {
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ["bloodRequest", id] });
       queryClient.invalidateQueries({ queryKey: ["allBloodRequests"] });
+      queryClient.invalidateQueries({ queryKey: ["myBloodRequests"] });
     },
   });
 }
@@ -45,6 +47,7 @@ export function useUpdateRequestStatus() {
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: ["bloodRequest", id] });
       queryClient.invalidateQueries({ queryKey: ["allBloodRequests"] });
+      queryClient.invalidateQueries({ queryKey: ["myBloodRequests"] });
       // ----fulfilled adds new donations
       queryClient.invalidateQueries({ queryKey: ["publicDonation"] });
     },
@@ -58,18 +61,31 @@ export function useCreateBloodRequest() {
   return useMutation({
     mutationFn: createBloodRequest,
     onSuccess: () => {
-      // ----old request list is stale now
+      // ----old request lists are stale now
       queryClient.invalidateQueries({ queryKey: ["allBloodRequests"] });
+      queryClient.invalidateQueries({ queryKey: ["myBloodRequests"] });
     },
   });
 }
 
-// -----get all blood requests
-export function useBloodRequwsts(query: IBloodRequestQuery) {
+// -----get all blood requests (only call when logged in)
+export function useBloodRequwsts(query: IBloodRequestQuery, enabled = true) {
   return useQuery({
     queryKey: ["allBloodRequests", query],
     queryFn: () => getBloodRequests(query),
     placeholderData: keepPreviousData,
+    enabled,
+    retry: false,
+  });
+}
+
+// -----get my open blood requests (only call when logged in)
+export function useMyBloodRequests(query: IBloodRequestQuery, enabled: boolean) {
+  return useQuery({
+    queryKey: ["myBloodRequests", query],
+    queryFn: () => getMyBloodRequests(query),
+    placeholderData: keepPreviousData,
+    enabled,
     retry: false,
   });
 }

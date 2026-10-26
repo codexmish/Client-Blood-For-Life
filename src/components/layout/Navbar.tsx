@@ -24,6 +24,7 @@ const recipientLinks = [
 const donorLinks = [
   { label: "Blood requests", href: "/blood-request" },
   { label: "Find donors", href: "/donors" },
+  { label: "My requests", href: "/my-requests" },
   { label: "My dashboard", href: "/dashboard" },
 ];
 

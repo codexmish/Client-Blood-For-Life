@@ -5,6 +5,13 @@ import {
   ICreateBloodRequest,
 } from "@/types";
 
+// ----get my open blood requests
+export const getMyBloodRequests = (query: IBloodRequestQuery) => {
+  return apiClient("/blood-request/my-requests", {
+    query: query,
+  });
+};
+
 // ----get single blood request
 export const getSingleBloodRequest = (id: string) => {
   return apiClient(`/blood-request/request/${id}`);
