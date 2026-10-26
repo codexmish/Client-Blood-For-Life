@@ -53,28 +53,33 @@ const ReuseAblePagination = () => {
     setPage(page);
   };
 
+  // -----button design
+  const buttonClass =
+    "h-11 min-w-11 cursor-pointer rounded-[10px] border border-[#D5D8DE] bg-white px-3 text-[15px] font-semibold text-[#15171C] hover:bg-[#F0F1F4] hover:text-[#15171C] data-[active=true]:border-[#15171C] data-[active=true]:bg-[#15171C] data-[active=true]:text-white";
+
   return (
-    <Pagination>
-      <PaginationContent>
+    <Pagination className="pt-8">
+      <PaginationContent className="flex-wrap justify-center gap-2">
         <PaginationItem>
           <PaginationPrevious
             onClick={() => gotoPage(page - 1)}
             aria-disabled={page === 1}
-            className={
-              page === 1 ? "pointer-events-none opacity-50" : undefined
-            }
+            className={`${buttonClass} gap-1 pl-2.5! pr-3.5 ${
+              page === 1 ? "pointer-events-none opacity-50" : ""
+            }`}
           />
         </PaginationItem>
         {getButtonArray(totalPages, page).map((item, index) =>
           item === "ellipsis" ? (
             <PaginationItem key={`ellipsis-${index+1}`}>
-              <PaginationEllipsis />
+              <PaginationEllipsis className="h-11 w-8 text-[#5B616E]" />
             </PaginationItem>
           ) : (
             <PaginationItem key={item}>
               <PaginationLink
                 onClick={() => setPage(item)}
                 isActive={page === item}
+                className={buttonClass}
               >
                 {item}
               </PaginationLink>
@@ -85,9 +90,9 @@ const ReuseAblePagination = () => {
           <PaginationNext
             onClick={() => gotoPage(page + 1)}
             aria-disabled={page === totalPages}
-            className={
-              page === totalPages ? "pointer-events-none opacity-50" : undefined
-            }
+            className={`${buttonClass} gap-1 pr-2.5! pl-3.5 ${
+              page === totalPages ? "pointer-events-none opacity-50" : ""
+            }`}
           />
         </PaginationItem>
       </PaginationContent>
