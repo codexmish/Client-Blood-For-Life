@@ -1,7 +1,12 @@
 "use client";
 
-import { useCreateBloodRequest } from "@/hooks";
-import { BloodGroupList, ICreateBloodRequest, UrgencyList } from "@/types";
+import { useCreateBloodRequest, useUpdateBloodRequest } from "@/hooks";
+import {
+  BloodGroupList,
+  ICreateBloodRequest,
+  ISingleBloodRequest,
+  UrgencyList,
+} from "@/types";
 import { createBloodRequestSchema } from "@/validation";
 import { useForm } from "@tanstack/react-form";
 import { Minus, Plus } from "lucide-react";
@@ -47,26 +52,45 @@ const inputClass = (invalid: boolean) =>
     invalid ? "border-red-500" : "border-[#D5D8DE]"
   }`;
 
-const CreateRequestForm = () => {
+// -----backend message (ofetch keeps it in err.data)
+const errorMessage = (err: unknown) =>
+  (err as { data?: { message?: string } }).data?.message ??
+  "Something Went Wrong";
+
+// -----editRequest given = edit mode, not given = create mode
+const BloodRequestForm = ({
+  editRequest,
+}: {
+  editRequest?: ISingleBloodRequest;
+}) => {
+  const isEdit = !!editRequest;
+
+  // -----donors already joined (edit mode)
+  const joined = editRequest?._count.donors ?? 0;
+
   // -----router
   const router = useRouter();
 
   // -----tanstack query data destracture
   const { mutate: createRequest, isPending: createPending } =
     useCreateBloodRequest();
+  const { mutate: updateRequest, isPending: updatePending } =
+    useUpdateBloodRequest();
+  const isPending = createPending || updatePending;
 
   // ------tanstack form
   const form = useForm({
     defaultValues: {
-      bloodGroup: "" as BloodGroupList,
-      patientName: "",
-      bagsNeeded: 1,
-      hospitalName: "",
-      address: "",
-      needAt: "",
-      phoneNumber: "",
-      urgency: UrgencyList.NORMAL,
-      note: "",
+      bloodGroup: editRequest?.bloodGroup ?? ("" as BloodGroupList),
+      patientName: editRequest?.patientName ?? "",
+      bagsNeeded: editRequest?.bagsNeeded ?? 1,
+      hospitalName: editRequest?.hospitalName ?? "",
+      address: editRequest?.address ?? "",
+      // ----date input needs YYYY-MM-DD
+      needAt: editRequest?.needAt.slice(0, 10) ?? "",
+      phoneNumber: editRequest?.phoneNumber ?? "",
+      urgency: editRequest?.urgency ?? UrgencyList.NORMAL,
+      note: editRequest?.note ?? "",
     },
     validators: {
       onSubmit: createBloodRequestSchema,
@@ -85,6 +109,28 @@ const CreateRequestForm = () => {
         note: data.value.note.trim() || undefined,
       };
 
+      // ----edit mode
+      if (editRequest) {
+        updateRequest(
+          { id: editRequest.id, payload: requestData },
+          {
+            onSuccess: () => {
+              toast.add({ title: "Request updated", type: "success" });
+              router.push(`/blood-request/${editRequest.id}`);
+            },
+            onError: (err) => {
+              toast.add({
+                title: "Request not updated",
+                description: errorMessage(err),
+                type: "error",
+              });
+            },
+          },
+        );
+        return;
+      }
+
+      // ----create mode
       createRequest(requestData, {
         onSuccess: () => {
           toast.add({
@@ -95,12 +141,9 @@ const CreateRequestForm = () => {
           router.push("/blood-request");
         },
         onError: (err) => {
-          // ----backend message (ofetch keeps it in err.data)
-          const message = (err as { data?: { message?: string } }).data
-            ?.message;
           toast.add({
             title: "Request not posted",
-            description: message ?? "Something Went Wrong",
+            description: errorMessage(err),
             type: "error",
           });
         },
@@ -119,10 +162,12 @@ const CreateRequestForm = () => {
       {/* -------------heading */}
       <div className="flex flex-col gap-1.5">
         <h1 className="text-[28px] font-bold tracking-[-0.02em] text-[#15171C] sm:text-[34px]">
-          Post a blood request
+          {isEdit ? "Edit blood request" : "Post a blood request"}
         </h1>
         <p className="text-[#5B616E]">
-          Matching donors see it in their feed right away.
+          {isEdit
+            ? "Donors see the new details right away."
+            : "Matching donors see it in their feed right away."}
         </p>
       </div>
 
@@ -145,8 +190,9 @@ const CreateRequestForm = () => {
                       key={item.value}
                       type="button"
                       aria-pressed={selected}
+                      disabled={joined > 0}
                       onClick={() => field.handleChange(item.value)}
-                      className={`h-12 min-w-14 cursor-pointer rounded-xl border px-3 text-[17px] font-bold transition-colors ${
+                      className={`h-12 min-w-14 cursor-pointer rounded-xl border px-3 text-[17px] font-bold transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
                         selected
                           ? "border-[#B4232A] bg-[#B4232A] text-white"
                           : "border-[#D5D8DE] bg-white text-[#15171C] hover:border-[#B4232A]"
@@ -162,6 +208,11 @@ const CreateRequestForm = () => {
                   className="text-[13px]"
                   errors={field.state.meta.errors}
                 />
+              )}
+              {joined > 0 && (
+                <p className={hintClass}>
+                  Donors already joined, so the blood group can’t change.
+                </p>
               )}
             </fieldset>
           );
@@ -216,7 +267,7 @@ const CreateRequestForm = () => {
                 <button
                   type="button"
                   aria-label="Fewer bags"
-                  disabled={field.state.value <= 1}
+                  disabled={field.state.value <= Math.max(1, joined)}
                   onClick={() => field.handleChange(field.state.value - 1)}
                   className="inline-flex size-12 cursor-pointer items-center justify-center rounded-[10px] border border-[#D5D8DE] bg-white text-[#15171C] transition-colors hover:bg-[#F0F1F4] disabled:cursor-not-allowed disabled:opacity-40"
                 >
@@ -234,7 +285,9 @@ const CreateRequestForm = () => {
                 >
                   <Plus className="size-5" />
                 </button>
-                <span className={hintClass}>1–5 bags</span>
+                <span className={hintClass}>
+                  {joined > 0 ? `${joined}–5 bags` : "1–5 bags"}
+                </span>
               </div>
             </div>
           )}
@@ -459,20 +512,22 @@ const CreateRequestForm = () => {
       {/* -------------buttons */}
       <div className="flex flex-wrap justify-end gap-3 border-t border-[#E3E5EA] pt-5">
         <Link
-          href="/blood-request"
+          href={isEdit ? `/blood-request/${editRequest.id}` : "/blood-request"}
           className="inline-flex h-12 items-center justify-center rounded-[10px] border border-[#D5D8DE] bg-white px-[22px] text-[15px] font-semibold text-[#15171C] transition-colors hover:bg-[#F0F1F4]"
         >
           Cancel
         </Link>
         <Button
           type="submit"
-          disabled={createPending}
+          disabled={isPending}
           className="h-12 gap-2 rounded-[10px] bg-[#B4232A] px-[22px] text-[15px] font-semibold text-white hover:bg-[#951C22]"
         >
-          {createPending ? (
+          {isPending ? (
             <>
-              Posting <Spinner />
+              {isEdit ? "Saving" : "Posting"} <Spinner />
             </>
+          ) : isEdit ? (
+            "Save changes"
           ) : (
             "Post request"
           )}
@@ -482,4 +537,4 @@ const CreateRequestForm = () => {
   );
 };
 
-export default CreateRequestForm;
+export default BloodRequestForm;

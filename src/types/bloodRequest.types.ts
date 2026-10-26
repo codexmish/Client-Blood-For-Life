@@ -41,6 +41,25 @@ export interface IBloodRequestQuery {
   sortOrder?: "asc" | "desc";
 }
 
+// -----donor who committed (only requester gets this)
+export interface ICommittedDonor {
+  id: string;
+  user: {
+    name: string;
+    bloodGroup: BloodGroupList;
+    phone: string | null;
+    avater: string;
+  };
+}
+
+// -----single blood request
+export interface ISingleBloodRequest extends IBloodRequest {
+  _count: {
+    donors: number;
+  };
+  donors?: ICommittedDonor[];
+}
+
 // -----create blood request payload
 export interface ICreateBloodRequest {
   patientName: string;

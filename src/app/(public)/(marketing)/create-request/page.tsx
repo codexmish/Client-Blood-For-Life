@@ -1,6 +1,6 @@
 "use client";
 
-import CreateRequestForm from "@/components/form/CreateRequestForm";
+import BloodRequestForm from "@/components/form/BloodRequestForm";
 import { useGetMe } from "@/hooks";
 import Link from "next/link";
 
@@ -15,7 +15,7 @@ const CreateRequestPage = () => {
       {userDataLoading ? (
         <div className="h-[600px] min-w-0 flex-[999_1_600px] animate-pulse rounded-[20px] border border-[#E3E5EA] bg-white" />
       ) : user ? (
-        <CreateRequestForm />
+        <BloodRequestForm />
       ) : (
         <div className="flex min-w-0 flex-[999_1_600px] flex-col items-start gap-4 rounded-[20px] border border-[#E3E5EA] bg-white p-6 sm:p-8">
           <h1 className="text-[28px] font-bold tracking-[-0.02em] text-[#15171C]">

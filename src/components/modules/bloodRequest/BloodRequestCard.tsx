@@ -5,6 +5,7 @@ import Link from "next/link";
 // -----props this card needs
 type TBloodRequestCardProps = Pick<
   IBloodRequest,
+  | "id"
   | "bloodGroup"
   | "urgency"
   | "hospitalName"
@@ -65,6 +66,7 @@ const BloodRequestCard = ({
   bagsNeeded,
   patientName,
   phoneNumber,
+  id,
 }: TBloodRequestCardProps) => {
   return (
     <article className="flex w-full max-w-[380px] flex-col gap-4 rounded-[18px] border border-[#E3E5EA] bg-white p-[22px]">
@@ -122,7 +124,7 @@ const BloodRequestCard = ({
           Call
         </a>
         <Link
-          href="/requests"
+          href={`/blood-request/${id}`}
           className="inline-flex h-11 flex-[2] items-center justify-center rounded-[10px] bg-[#B4232A] text-[15px] font-semibold text-white transition-colors hover:bg-[#951C22]"
         >
           View &amp; donate

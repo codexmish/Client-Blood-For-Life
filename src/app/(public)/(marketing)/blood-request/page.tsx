@@ -205,6 +205,7 @@ const BloodRequestPage = () => {
           {bloodRequestsData?.data.map((item: IBloodRequest) => (
             <BloodRequestCard
               key={item.id}
+              id={item.id}
               hospitalName={item.hospitalName}
               bloodGroup={item.bloodGroup}
               urgency={item.urgency}
