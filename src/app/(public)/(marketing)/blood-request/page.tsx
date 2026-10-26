@@ -1,12 +1,16 @@
 "use client";
 import BloodRequestCard from "@/components/modules/bloodRequest/BloodRequestCard";
+import ReuseAblePagination from "@/components/modules/global/ReuseAblePagination";
 import { useBloodRequwsts } from "@/hooks";
 import { IBloodRequest } from "@/types";
 
 const BloodRequestPage = () => {
   // -----getting all blood requests
-  const { data: bloodRequestsData, isLoading: bloodRequestsDataLoading } =
-    useBloodRequwsts();
+  const { data: bloodRequestsData, isLoading: bloodRequestsDataLoading } = useBloodRequwsts();
+
+  console.log(bloodRequestsData);
+  
+
 
   return (
     <div className="mx-auto max-w-[1200px] px-4 py-10 sm:px-6 md:py-12">
@@ -26,6 +30,10 @@ const BloodRequestPage = () => {
           />
         ))}
       </div>
+
+
+      {/* -----pagination */}
+      <ReuseAblePagination/>
     </div>
   );
 };
