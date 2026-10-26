@@ -1,7 +1,7 @@
 "use client";
 import BloodRequestCard from "@/components/modules/bloodRequest/BloodRequestCard";
 import ReuseAblePagination from "@/components/modules/global/ReuseAblePagination";
-import { useBloodRequwsts, useGetMe } from "@/hooks";
+import { useBloodRequwsts, useDebounce, useGetMe } from "@/hooks";
 import { BloodGroupList, IBloodRequest, UrgencyList } from "@/types";
 import { Plus } from "lucide-react";
 import Link from "next/link";
@@ -53,6 +53,9 @@ const BloodRequestPage = () => {
   // -----page and filter states
   const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState("");
+
+  // -----search value for api (after user stops typing)
+  const debouncedSearch = useDebounce(searchTerm, 500);
   const [bloodGroup, setBloodGroup] = useState("");
   const [urgency, setUrgency] = useState("");
   const [sort, setSort] = useState("");
@@ -70,7 +73,7 @@ const BloodRequestPage = () => {
     useBloodRequwsts(
       {
         page,
-        searchTerm: searchTerm || undefined,
+        searchTerm: debouncedSearch || undefined,
         bloodGroup: (bloodGroup as BloodGroupList) || undefined,
         urgency: (urgency as UrgencyList) || undefined,
         sortBy: selectedSort.sortBy,
