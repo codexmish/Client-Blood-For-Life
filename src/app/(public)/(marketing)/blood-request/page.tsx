@@ -3,13 +3,19 @@ import BloodRequestCard from "@/components/modules/bloodRequest/BloodRequestCard
 import ReuseAblePagination from "@/components/modules/global/ReuseAblePagination";
 import { useBloodRequwsts } from "@/hooks";
 import { IBloodRequest } from "@/types";
+import { useState } from "react";
 
 const BloodRequestPage = () => {
+    //   -----current page state
+  const [page, setPage] = useState(1);
+
+
   // -----getting all blood requests
-  const { data: bloodRequestsData, isLoading: bloodRequestsDataLoading } = useBloodRequwsts();
+  const { data: bloodRequestsData, isLoading: bloodRequestsDataLoading } =
+    useBloodRequwsts(page);
 
   console.log(bloodRequestsData);
-  
+
 
 
   return (
@@ -31,9 +37,12 @@ const BloodRequestPage = () => {
         ))}
       </div>
 
-
       {/* -----pagination */}
-      <ReuseAblePagination/>
+      <ReuseAblePagination
+        totalPages={bloodRequestsData?.meta.totalPages}
+        page={page}
+        setPage={setPage}
+      />
     </div>
   );
 };

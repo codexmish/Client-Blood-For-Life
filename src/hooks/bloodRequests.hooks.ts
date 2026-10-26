@@ -1,11 +1,12 @@
 import { getBloodRequests } from "@/api";
-import { useQuery } from "@tanstack/react-query";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 // -----get me
-export function useBloodRequwsts() {
+export function useBloodRequwsts(page: number) {
   return useQuery({
-    queryKey: ["allBloodRequests"],
-    queryFn: getBloodRequests,
+    queryKey: ["allBloodRequests", page],
+    queryFn: ()=>getBloodRequests(page),
+    placeholderData: keepPreviousData,
     retry: false,
   });
 }

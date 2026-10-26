@@ -8,7 +8,13 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { useState } from "react";
+
+// -----props
+interface IPaginationProps {
+  totalPages: number;
+  page: number;
+  setPage: (page: number) => void;
+}
 
 // ------pagination button array
 const getButtonArray = (
@@ -41,12 +47,10 @@ const getButtonArray = (
   return [1, "ellipsis", page - 1, page, page + 1, "ellipsis", totalPages];
 };
 
-const ReuseAblePagination = () => {
+const ReuseAblePagination = ({ totalPages, page, setPage }: IPaginationProps) => {
   // ====total page number
-  const totalPages = 20;
+  //   const totalPages = 20;
 
-  //   -----current page state
-  const [page, setPage] = useState(1);
 
   //   -------setting page to go
   const gotoPage = (page: number) => {
@@ -71,7 +75,7 @@ const ReuseAblePagination = () => {
         </PaginationItem>
         {getButtonArray(totalPages, page).map((item, index) =>
           item === "ellipsis" ? (
-            <PaginationItem key={`ellipsis-${index+1}`}>
+            <PaginationItem key={`ellipsis-${index + 1}`}>
               <PaginationEllipsis className="h-11 w-8 text-[#5B616E]" />
             </PaginationItem>
           ) : (
