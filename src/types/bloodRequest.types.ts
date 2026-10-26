@@ -30,3 +30,11 @@ export interface IBloodRequest {
   createdAt: string;
   updatedAt: string;
 }
+
+// -----filters for blood request feed
+export interface IBloodRequestQuery {
+  page: number;
+  searchTerm?: string;
+  bloodGroup?: BloodGroupList;
+  urgency?: UrgencyList;
+}
