@@ -3,6 +3,8 @@ import BloodRequestCard from "@/components/modules/bloodRequest/BloodRequestCard
 import ReuseAblePagination from "@/components/modules/global/ReuseAblePagination";
 import { useBloodRequwsts } from "@/hooks";
 import { BloodGroupList, IBloodRequest, UrgencyList } from "@/types";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 
 // -----blood group options
@@ -26,6 +28,13 @@ const urgencyOptions = [
   { label: "Normal", value: "NORMAL" },
 ];
 
+// -----sort options (newest is backend default, so nothing is sent)
+const sortOptions = [
+  { label: "Newest", value: "", sortBy: undefined, sortOrder: undefined },
+  { label: "Needed soonest", value: "soonest", sortBy: "needAt", sortOrder: "asc" },
+  { label: "Most bags", value: "bags", sortBy: "bagsNeeded", sortOrder: "desc" },
+] as const;
+
 // -----input design
 const inputClass =
   "h-11 w-full rounded-[10px] border border-[#D5D8DE] bg-white px-3 text-[15px] text-[#15171C] outline-none placeholder:text-[#8A909B] focus:border-[#B4232A] focus:ring-3 focus:ring-[#B4232A]/20";
@@ -36,6 +45,11 @@ const BloodRequestPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [bloodGroup, setBloodGroup] = useState("");
   const [urgency, setUrgency] = useState("");
+  const [sort, setSort] = useState("");
+
+  // -----selected sort option
+  const selectedSort =
+    sortOptions.find((item) => item.value === sort) ?? sortOptions[0];
 
   // -----getting all blood requests
   const { data: bloodRequestsData, isLoading: bloodRequestsDataLoading } =
@@ -44,25 +58,38 @@ const BloodRequestPage = () => {
       searchTerm: searchTerm || undefined,
       bloodGroup: (bloodGroup as BloodGroupList) || undefined,
       urgency: (urgency as UrgencyList) || undefined,
+      sortBy: selectedSort.sortBy,
+      sortOrder: selectedSort.sortOrder,
     });
 
   return (
     <div className="mx-auto flex max-w-[1200px] flex-col gap-6 px-4 py-10 sm:px-6 md:py-12">
       {/* ------heading */}
-      <div className="flex flex-col gap-1.5">
-        <h1 className="text-[32px] font-bold tracking-[-0.02em] text-[#15171C] sm:text-[40px]">
-          Blood requests
-        </h1>
-        <p className="text-base text-[#5B616E]">
-          Open requests needed today or later. Call the number on the card or
-          commit to donate.
-        </p>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div className="flex flex-col gap-1.5">
+          <h1 className="text-[32px] font-bold tracking-[-0.02em] text-[#15171C] sm:text-[40px]">
+            Blood requests
+          </h1>
+          <p className="text-base text-[#5B616E]">
+            Open requests needed today or later. Call the number on the card or
+            commit to donate.
+          </p>
+        </div>
+
+        {/* -----post a request button */}
+        <Link
+          href="/create-request"
+          className="inline-flex h-11 items-center justify-center gap-2 rounded-[10px] bg-[#B4232A] px-[18px] text-[15px] font-semibold text-white transition-colors hover:bg-[#951C22]"
+        >
+          <Plus className="size-[18px]" strokeWidth={2.4} />
+          Post a request
+        </Link>
       </div>
 
       {/* ------filters */}
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="grid grid-cols-1 gap-3.5 rounded-2xl border border-[#E3E5EA] bg-white p-[18px] sm:grid-cols-2 lg:grid-cols-4"
+        className="grid grid-cols-1 gap-3.5 rounded-2xl border border-[#E3E5EA] bg-white p-[18px] sm:grid-cols-2 lg:grid-cols-5"
       >
         {/* -----search */}
         <div className="flex flex-col gap-1.5 sm:col-span-2">
@@ -128,6 +155,31 @@ const BloodRequestPage = () => {
             className={inputClass}
           >
             {urgencyOptions.map((item) => (
+              <option key={item.label} value={item.value}>
+                {item.label}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* -----sort by */}
+        <div className="flex flex-col gap-1.5">
+          <label
+            htmlFor="sortBy"
+            className="text-[13px] font-semibold text-[#3B404B]"
+          >
+            Sort by
+          </label>
+          <select
+            id="sortBy"
+            value={sort}
+            onChange={(e) => {
+              setSort(e.target.value);
+              setPage(1);
+            }}
+            className={inputClass}
+          >
+            {sortOptions.map((item) => (
               <option key={item.label} value={item.value}>
                 {item.label}
               </option>

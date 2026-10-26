@@ -37,4 +37,6 @@ export interface IBloodRequestQuery {
   searchTerm?: string;
   bloodGroup?: BloodGroupList;
   urgency?: UrgencyList;
+  sortBy?: "createdAt" | "needAt" | "bagsNeeded";
+  sortOrder?: "asc" | "desc";
 }
