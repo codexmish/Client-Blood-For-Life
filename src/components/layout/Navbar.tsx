@@ -9,20 +9,20 @@ import { Menu } from "@base-ui/react/menu";
 
 // -----menu items
 const navLinks = [
-  { label: "Blood requests", href: "/requests" },
+  { label: "Blood requests", href: "/blood-request" },
   { label: "Find donors", href: "/donors" },
   { label: "How it works", href: "/#how" },
 ];
 
 // -----menu items after login
 const recipientLinks = [
-  { label: "Blood requests", href: "/requests" },
+  { label: "Blood requests", href: "/blood-request" },
   { label: "Find donors", href: "/donors" },
   { label: "My requests", href: "/my-requests" },
 ];
 
 const donorLinks = [
-  { label: "Blood requests", href: "/requests" },
+  { label: "Blood requests", href: "/blood-request" },
   { label: "Find donors", href: "/donors" },
   { label: "My dashboard", href: "/dashboard" },
 ];
