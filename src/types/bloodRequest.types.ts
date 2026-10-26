@@ -40,3 +40,16 @@ export interface IBloodRequestQuery {
   sortBy?: "createdAt" | "needAt" | "bagsNeeded";
   sortOrder?: "asc" | "desc";
 }
+
+// -----create blood request payload
+export interface ICreateBloodRequest {
+  patientName: string;
+  bloodGroup: BloodGroupList;
+  bagsNeeded: number;
+  hospitalName: string;
+  address: string;
+  urgency?: UrgencyList;
+  needAt: string;
+  phoneNumber: string;
+  note?: string;
+}

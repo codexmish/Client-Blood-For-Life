@@ -1,5 +1,10 @@
 import apiClient from "@/lib/apiClient";
-import { IBloodRequestQuery } from "@/types";
+import { IBloodRequestQuery, ICreateBloodRequest } from "@/types";
+
+// ----create blood request
+export const createBloodRequest = (payload: ICreateBloodRequest) => {
+  return apiClient("/blood-request/create", { method: "POST", body: payload });
+};
 
 // ----get all blood requests
 export const getBloodRequests = (query: IBloodRequestQuery) => {
