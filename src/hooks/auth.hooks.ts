@@ -1,4 +1,11 @@
-import { getMe, userLogout, userSignIn, userSignUp, userVerify } from "@/api";
+import {
+  getMe,
+  resendOtp,
+  userLogout,
+  userSignIn,
+  userSignUp,
+  userVerify,
+} from "@/api";
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 // ------user sign in
@@ -19,6 +26,13 @@ export function useSignup() {
 export function useOtpVerify() {
   return useMutation({
     mutationFn: userVerify,
+  });
+}
+
+// ------resend otp
+export function useResendOtp() {
+  return useMutation({
+    mutationFn: resendOtp,
   });
 }
 

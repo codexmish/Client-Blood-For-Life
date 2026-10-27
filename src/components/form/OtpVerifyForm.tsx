@@ -5,10 +5,12 @@ import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 import { Button } from "../ui/button";
 import type { IOtpVerify } from "@/types";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useOtpVerify } from "@/hooks";
+import { useOtpVerify, useResendOtp } from "@/hooks";
 import { toast } from "../ui/toast";
 import { Spinner } from "../ui/spinner";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { errorMessage } from "@/utils";
 
 const OtpVerifyForm = () => {
   // -----getting eamil from params
@@ -17,6 +19,44 @@ const OtpVerifyForm = () => {
 
   // -----tanstack query data destracture
   const { mutate: verify, isPending: verifyPending } = useOtpVerify();
+  const { mutate: resend, isPending: resendPending } = useResendOtp();
+
+  // -----resend countdown (code was just sent, so start at 60)
+  const [secondsLeft, setSecondsLeft] = useState(60);
+
+  useEffect(() => {
+    if (secondsLeft <= 0) return;
+    const timer = setTimeout(() => setSecondsLeft(secondsLeft - 1), 1000);
+    return () => clearTimeout(timer);
+  }, [secondsLeft]);
+
+  // -----resend code
+  const handleResend = () => {
+    if (!otpEmail) return;
+
+    resend(otpEmail, {
+      onSuccess: () => {
+        toast.add({
+          title: "New code sent",
+          description: "Check your email",
+          type: "success",
+        });
+        setSecondsLeft(60);
+        // ----old code doesn't work anymore
+        form.setFieldValue("otp", "");
+      },
+      onError: (err) => {
+        toast.add({
+          title: "Code not sent",
+          description: errorMessage(err),
+          type: "error",
+        });
+      },
+    });
+  };
+
+  // -----0:45 style
+  const countdown = `${Math.floor(secondsLeft / 60)}:${String(secondsLeft % 60).padStart(2, "0")}`;
 
   const router = useRouter();
 
@@ -71,7 +111,7 @@ const OtpVerifyForm = () => {
           <strong className="break-words font-semibold text-[#15171C]">
             {otpEmail}
           </strong>
-          .
+          . It expires in 5 minutes.
         </p>
       </div>
 
@@ -145,6 +185,33 @@ const OtpVerifyForm = () => {
           )}
         </Button>
       </form>
+
+      {/* -------------resend */}
+      <div className="flex flex-col gap-3">
+        <div className="flex items-center justify-between gap-3 text-sm text-[#5B616E]">
+          <span>Didn’t get it?</span>
+          <button
+            type="button"
+            onClick={handleResend}
+            disabled={secondsLeft > 0 || resendPending || !otpEmail}
+            className="inline-flex min-h-11 cursor-pointer items-center gap-2 text-sm font-semibold text-[#B4232A] hover:text-[#8E1A20] disabled:cursor-not-allowed disabled:text-[#5B616E]"
+          >
+            {resendPending ? (
+              <>
+                Sending <Spinner />
+              </>
+            ) : secondsLeft > 0 ? (
+              `Resend in ${countdown}`
+            ) : (
+              "Resend code"
+            )}
+          </button>
+        </div>
+        <p className="rounded-[10px] bg-[#F4F5F7] px-3.5 py-3 text-[13.5px] text-[#4A505C]">
+          You can ask for a new code once a minute. The old code stops working
+          when a new one is sent.
+        </p>
+      </div>
 
       {/* -------------footer */}
       <p className="text-center text-sm text-[#5B616E]">

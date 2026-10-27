@@ -16,6 +16,11 @@ export function userVerify(payload: IOtpVerify) {
   return apiClient("/auth/otp-verify", { method: "POST", body: payload });
 }
 
+// -------resend otp (1 minute cooldown in backend)
+export function resendOtp(email: string) {
+  return apiClient("/auth/resend-otp", { method: "POST", body: { email } });
+}
+
 // ----get me
 export const getMe = () => {
   return apiClient("/auth/me");
