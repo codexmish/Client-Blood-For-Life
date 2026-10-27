@@ -6,6 +6,8 @@ import Link from "next/link";
 import { toast } from "../ui/toast";
 import { LogOut } from "lucide-react";
 import { Menu } from "@base-ui/react/menu";
+import { usePathname } from "next/navigation";
+import { Suspense } from "react";
 
 // -----menu items
 const navLinks = [
@@ -27,6 +29,47 @@ const donorLinks = [
   { label: "Find donors", href: "/donors" },
   { label: "My dashboard", href: "/dashboard" },
 ];
+
+// -----menu link list (pathname given = active link highlighted)
+const NavLinkList = ({
+  links,
+  pathname,
+}: {
+  links: { label: string; href: string }[];
+  pathname?: string;
+}) => {
+  return links.map((item) => {
+    // ----same page or a page inside it (/blood-request/123)
+    const isActive =
+      !!pathname &&
+      (pathname === item.href || pathname.startsWith(`${item.href}/`));
+
+    return (
+      <Link
+        key={item.href}
+        href={item.href}
+        aria-current={isActive ? "page" : undefined}
+        className={`whitespace-nowrap rounded-lg px-3 py-2.5 text-[15px] transition-colors ${
+          isActive
+            ? "bg-[#FBEAEA] font-semibold text-[#8E1A20]"
+            : "text-[#3B404B] hover:bg-[#E9EBEF] hover:text-[#15171C]"
+        }`}
+      >
+        {item.label}
+      </Link>
+    );
+  });
+};
+
+// -----reads current url, so it sits inside Suspense
+const ActiveNavLinks = ({
+  links,
+}: {
+  links: { label: string; href: string }[];
+}) => {
+  const pathname = usePathname();
+  return <NavLinkList links={links} pathname={pathname} />;
+};
 
 const Navbar = () => {
   // -----getting user data
@@ -104,15 +147,10 @@ const Navbar = () => {
           aria-label="Main"
           className="order-last -mx-3 flex w-[calc(100%+1.5rem)] items-center gap-1 overflow-x-auto md:order-none md:mx-0 md:w-auto"
         >
-          {menuLinks.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="whitespace-nowrap rounded-lg px-3 py-2.5 text-[15px] text-[#3B404B] transition-colors hover:bg-[#E9EBEF] hover:text-[#15171C]"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {/* ----usePathname needs suspense (cacheComponents) */}
+          <Suspense fallback={<NavLinkList links={menuLinks} />}>
+            <ActiveNavLinks links={menuLinks} />
+          </Suspense>
         </nav>
 
         {/* ------right side */}
