@@ -45,7 +45,7 @@ const CanYouDonate = () => {
             <div className="h-[52px] w-48 animate-pulse rounded-[10px] bg-[#E9EBEF]" />
           ) : (
             <Link
-              href={isDonor ? "/dashboard" : user ? "/become-donor" : "/signup"}
+              href={isDonor ? "/dashboard/profile" : user ? "/become-donor" : "/signup"}
               className="inline-flex h-[52px] items-center justify-center rounded-[10px] bg-[#B4232A] px-6 text-[15px] font-semibold text-white transition-colors hover:bg-[#951C22]"
             >
               {isDonor

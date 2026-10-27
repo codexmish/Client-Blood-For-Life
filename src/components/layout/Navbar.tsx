@@ -4,7 +4,7 @@ import { useGetMe, useLogout } from "@/hooks";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { toast } from "../ui/toast";
-import { LogOut } from "lucide-react";
+import { LogOut, UserRound } from "lucide-react";
 import { Menu } from "@base-ui/react/menu";
 import { usePathname } from "next/navigation";
 import { Suspense } from "react";
@@ -27,7 +27,7 @@ const donorLinks = [
   { label: "Blood requests", href: "/blood-request" },
   { label: "My requests", href: "/my-requests" },
   { label: "Find donors", href: "/donors" },
-  { label: "My dashboard", href: "/dashboard" },
+  { label: "My dashboard", href: "/dashboard/profile" },
 ];
 
 // -----menu link list (pathname given = active link highlighted)
@@ -218,10 +218,19 @@ const Navbar = () => {
 
                     <div className="-mx-2 h-px bg-[#E3E5EA]" />
 
+                    {/* -----profile */}
+                    <Menu.Item
+                      render={<Link href="/dashboard/profile" />}
+                      className="mt-2 flex min-h-11 cursor-pointer items-center gap-2.5 rounded-[10px] px-2.5 text-[15px] font-semibold text-[#15171C] outline-none transition-colors data-highlighted:bg-[#F0F1F4]"
+                    >
+                      <UserRound className="size-[18px]" />
+                      My profile
+                    </Menu.Item>
+
                     {/* -----logout */}
                     <Menu.Item
                       onClick={handleLogout}
-                      className="mt-2 flex min-h-11 cursor-pointer items-center gap-2.5 rounded-[10px] px-2.5 text-[15px] font-semibold text-[#8E1A20] outline-none transition-colors data-highlighted:bg-[#FBEAEA]"
+                      className="flex min-h-11 cursor-pointer items-center gap-2.5 rounded-[10px] px-2.5 text-[15px] font-semibold text-[#8E1A20] outline-none transition-colors data-highlighted:bg-[#FBEAEA]"
                     >
                       <LogOut className="size-[18px]" />
                       Log out
