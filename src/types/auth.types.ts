@@ -30,3 +30,10 @@ export interface IOtpVerify {
   email: string;
   otp: string;
 }
+
+// -----reset password payload
+export interface IResetPassword {
+  email: string;
+  otp: string;
+  newPassword: string;
+}

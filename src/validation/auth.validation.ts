@@ -31,3 +31,24 @@ export const otpVerifySchema = z.object({
     .min(6, "otp must be 6 caracters long")
     .max(6, "otp max 6 caracters long"),
 });
+
+// -----forget password validation
+export const forgetPasswordSchema = z.object({
+  email: z.email("Invalid email address").toLowerCase(),
+});
+
+// -----reset password validation
+export const resetPasswordSchema = z
+  .object({
+    otp: z.string().length(6, "Enter the 6-digit code"),
+    newPassword: z
+      .string()
+      .min(8, "Password must be 8 characters long")
+      .max(32, "Password max 32 characters long"),
+    confirmPassword: z.string(),
+  })
+  // ----both password fields must match
+  .refine((data) => data.newPassword === data.confirmPassword, {
+    message: "Passwords don't match",
+    path: ["confirmPassword"],
+  });

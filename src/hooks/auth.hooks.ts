@@ -1,6 +1,8 @@
 import {
+  forgetPassword,
   getMe,
   resendOtp,
+  resetPassword,
   userLogout,
   userSignIn,
   userSignUp,
@@ -33,6 +35,20 @@ export function useOtpVerify() {
 export function useResendOtp() {
   return useMutation({
     mutationFn: resendOtp,
+  });
+}
+
+// ------forget password
+export function useForgetPassword() {
+  return useMutation({
+    mutationFn: forgetPassword,
+  });
+}
+
+// ------reset password
+export function useResetPassword() {
+  return useMutation({
+    mutationFn: resetPassword,
   });
 }
 

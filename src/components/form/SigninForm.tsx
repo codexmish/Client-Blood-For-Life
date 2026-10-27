@@ -118,12 +118,20 @@ const SigninForm = () => {
 
             return (
               <Field className="gap-1.5">
-                <FieldLabel
-                  htmlFor={field.name}
-                  className="text-sm font-semibold text-[#15171C]"
-                >
-                  Password
-                </FieldLabel>
+                <div className="flex items-baseline justify-between gap-3">
+                  <FieldLabel
+                    htmlFor={field.name}
+                    className="text-sm font-semibold text-[#15171C]"
+                  >
+                    Password
+                  </FieldLabel>
+                  <Link
+                    href="/forgot-password"
+                    className="text-sm font-semibold text-[#B4232A] hover:text-[#8E1A20]"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
                 <div className="relative">
                   <Input
                     id={field.name}
