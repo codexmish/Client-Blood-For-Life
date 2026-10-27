@@ -3,7 +3,7 @@ import { useForm } from "@tanstack/react-form";
 import { Field, FieldError, FieldLabel } from "../ui/field";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../ui/input-otp";
 import { Button } from "../ui/button";
-import { IOtpVerify } from "@/types";
+import type { IOtpVerify } from "@/types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useOtpVerify } from "@/hooks";
 import { toast } from "../ui/toast";

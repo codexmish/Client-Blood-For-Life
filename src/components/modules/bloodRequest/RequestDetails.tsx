@@ -8,7 +8,11 @@ import {
   useSingleBloodRequest,
   useUpdateRequestStatus,
 } from "@/hooks";
-import { BloodRequestStatus, IBloodRequest, ISingleBloodRequest } from "@/types";
+import {
+  BloodRequestStatus,
+  type IBloodRequest,
+  type ISingleBloodRequest,
+} from "@/types";
 import { ChevronLeft, Phone } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -73,8 +77,11 @@ const RequestDetails = () => {
   const donor = user?.donor;
 
   // -----request data
-  const { data: requestData, isLoading: requestLoading, error: requestError } =
-    useSingleBloodRequest(id, !!user);
+  const {
+    data: requestData,
+    isLoading: requestLoading,
+    error: requestError,
+  } = useSingleBloodRequest(id, !!user);
   const request: ISingleBloodRequest | undefined = requestData?.data;
 
   // -----my commitments (to know if i already joined)
@@ -517,23 +524,26 @@ const RequestDetails = () => {
           )}
 
           {/* -----not a donor */}
-          {!isOwner && isOpen && !isCommitted && cantJoinReason === "notDonor" && (
-            <div className={`${cardClass} gap-3.5`}>
-              <h2 className="text-[22px] font-bold text-[#15171C]">
-                Want to donate?
-              </h2>
-              <p className="leading-[1.55] text-[#4A505C]">
-                Become a donor to commit to blood requests. You can still call
-                the requester now.
-              </p>
-              <Link href="/become-donor" className={primaryBtn}>
-                Become a donor
-              </Link>
-              <a href={`tel:${request.phoneNumber}`} className={ghostBtn}>
-                Call {request.phoneNumber}
-              </a>
-            </div>
-          )}
+          {!isOwner &&
+            isOpen &&
+            !isCommitted &&
+            cantJoinReason === "notDonor" && (
+              <div className={`${cardClass} gap-3.5`}>
+                <h2 className="text-[22px] font-bold text-[#15171C]">
+                  Want to donate?
+                </h2>
+                <p className="leading-[1.55] text-[#4A505C]">
+                  Become a donor to commit to blood requests. You can still call
+                  the requester now.
+                </p>
+                <Link href="/become-donor" className={primaryBtn}>
+                  Become a donor
+                </Link>
+                <a href={`tel:${request.phoneNumber}`} className={ghostBtn}>
+                  Call {request.phoneNumber}
+                </a>
+              </div>
+            )}
 
           {/* -----donor but can't join */}
           {!isOwner &&

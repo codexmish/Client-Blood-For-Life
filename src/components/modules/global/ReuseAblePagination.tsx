@@ -47,10 +47,13 @@ const getButtonArray = (
   return [1, "ellipsis", page - 1, page, page + 1, "ellipsis", totalPages];
 };
 
-const ReuseAblePagination = ({ totalPages, page, setPage }: IPaginationProps) => {
+const ReuseAblePagination = ({
+  totalPages,
+  page,
+  setPage,
+}: IPaginationProps) => {
   // ====total page number
   //   const totalPages = 20;
-
 
   //   -------setting page to go
   const gotoPage = (page: number) => {

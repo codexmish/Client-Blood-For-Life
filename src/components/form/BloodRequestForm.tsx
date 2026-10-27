@@ -3,8 +3,8 @@
 import { useCreateBloodRequest, useUpdateBloodRequest } from "@/hooks";
 import {
   BloodGroupList,
-  ICreateBloodRequest,
-  ISingleBloodRequest,
+  type ICreateBloodRequest,
+  type ISingleBloodRequest,
   UrgencyList,
 } from "@/types";
 import { createBloodRequestSchema } from "@/validation";
@@ -255,15 +255,9 @@ const BloodRequestForm = ({
         {/* -------------bags needed */}
         <form.Field name="bagsNeeded">
           {(field) => (
-            <div className="flex flex-col gap-1.5">
-              <span id="bags-label" className={labelClass}>
-                Bags needed
-              </span>
-              <div
-                role="group"
-                aria-labelledby="bags-label"
-                className="flex items-center gap-2.5"
-              >
+            <fieldset className="flex flex-col">
+              <legend className={`${labelClass} mb-1.5`}>Bags needed</legend>
+              <div className="flex items-center gap-2.5">
                 <button
                   type="button"
                   aria-label="Fewer bags"
@@ -289,7 +283,7 @@ const BloodRequestForm = ({
                   {joined > 0 ? `${joined}–5 bags` : "1–5 bags"}
                 </span>
               </div>
-            </div>
+            </fieldset>
           )}
         </form.Field>
       </div>

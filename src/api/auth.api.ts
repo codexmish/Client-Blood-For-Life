@@ -1,5 +1,5 @@
 import apiClient from "@/lib/apiClient";
-import { IOtpVerify, ISignIn, ISignup } from "@/types";
+import type { IOtpVerify, ISignIn, ISignup } from "@/types";
 
 // ------user sign in
 export function userSignIn(payload: ISignIn) {

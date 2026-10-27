@@ -2,7 +2,7 @@
 
 import BloodRequestForm from "@/components/form/BloodRequestForm";
 import { useGetMe, useSingleBloodRequest } from "@/hooks";
-import { BloodRequestStatus, ISingleBloodRequest } from "@/types";
+import { BloodRequestStatus, type ISingleBloodRequest } from "@/types";
 import { ChevronLeft } from "lucide-react";
 import Link from "next/link";
 import { useParams } from "next/navigation";

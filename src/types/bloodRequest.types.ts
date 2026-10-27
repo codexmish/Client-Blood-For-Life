@@ -1,5 +1,4 @@
-import { BloodGroupList } from "./auth.types";
-
+import type { BloodGroupList } from "./auth.types";
 
 export enum UrgencyList {
   NORMAL = "NORMAL",

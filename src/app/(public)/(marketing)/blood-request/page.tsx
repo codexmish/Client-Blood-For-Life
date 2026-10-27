@@ -2,7 +2,7 @@
 import BloodRequestCard from "@/components/modules/bloodRequest/BloodRequestCard";
 import ReuseAblePagination from "@/components/modules/global/ReuseAblePagination";
 import { useBloodRequwsts, useDebounce, useGetMe } from "@/hooks";
-import { BloodGroupList, IBloodRequest, UrgencyList } from "@/types";
+import type { BloodGroupList, IBloodRequest, UrgencyList } from "@/types";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";

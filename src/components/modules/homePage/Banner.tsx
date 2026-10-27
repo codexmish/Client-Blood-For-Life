@@ -1,7 +1,7 @@
 "use client";
 
 import { useGetMe, usePublicDonation } from "@/hooks";
-import { IPublicDonation } from "@/types";
+import type { IPublicDonation } from "@/types";
 import Link from "next/link";
 
 // -----blood group label for showing

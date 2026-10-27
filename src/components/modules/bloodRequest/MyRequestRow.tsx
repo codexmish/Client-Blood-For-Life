@@ -1,4 +1,4 @@
-import { IBloodRequest } from "@/types";
+import type { IBloodRequest } from "@/types";
 import Link from "next/link";
 
 // -----props this row needs

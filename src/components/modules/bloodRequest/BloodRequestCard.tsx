@@ -1,4 +1,4 @@
-import { IBloodRequest } from "@/types";
+import type { IBloodRequest } from "@/types";
 import { Phone } from "lucide-react";
 import Link from "next/link";
 
@@ -87,9 +87,7 @@ const BloodRequestCard = ({
         <h3 className="truncate text-lg font-semibold text-[#15171C]">
           {hospitalName}
         </h3>
-        <p className="truncate text-[14.5px] text-[#5B616E]">
-          {address}
-        </p>
+        <p className="truncate text-[14.5px] text-[#5B616E]">{address}</p>
       </div>
 
       {/* ------needed, bags, patient */}

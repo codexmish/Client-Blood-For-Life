@@ -6,7 +6,7 @@ import {
   updateBloodRequest,
   updateRequestStatus,
 } from "@/api";
-import { IBloodRequestQuery } from "@/types";
+import type { IBloodRequestQuery } from "@/types";
 import {
   keepPreviousData,
   useMutation,
@@ -80,7 +80,10 @@ export function useBloodRequwsts(query: IBloodRequestQuery, enabled = true) {
 }
 
 // -----get my open blood requests (only call when logged in)
-export function useMyBloodRequests(query: IBloodRequestQuery, enabled: boolean) {
+export function useMyBloodRequests(
+  query: IBloodRequestQuery,
+  enabled: boolean,
+) {
   return useQuery({
     queryKey: ["myBloodRequests", query],
     queryFn: () => getMyBloodRequests(query),

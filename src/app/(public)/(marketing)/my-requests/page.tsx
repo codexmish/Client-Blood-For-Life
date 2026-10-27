@@ -2,7 +2,7 @@
 import MyRequestRow from "@/components/modules/bloodRequest/MyRequestRow";
 import ReuseAblePagination from "@/components/modules/global/ReuseAblePagination";
 import { useDebounce, useGetMe, useMyBloodRequests } from "@/hooks";
-import { BloodGroupList, IBloodRequest } from "@/types";
+import type { BloodGroupList, IBloodRequest } from "@/types";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";

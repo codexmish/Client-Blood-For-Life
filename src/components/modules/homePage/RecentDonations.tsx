@@ -1,7 +1,7 @@
 "use client";
 
 import { usePublicDonation } from "@/hooks";
-import { IPublicDonation } from "@/types";
+import type { IPublicDonation } from "@/types";
 
 // -----blood group label for showing
 const bloodGroupLabel: Record<string, string> = {

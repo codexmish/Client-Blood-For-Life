@@ -10,7 +10,7 @@ import { useSignup } from "@/hooks";
 import { Button } from "../ui/button";
 import { Spinner } from "../ui/spinner";
 import { useRouter } from "next/navigation";
-import { BloodGroupList, ISignup } from "@/types";
+import { BloodGroupList, type ISignup } from "@/types";
 import {
   Select,
   SelectContent,
