@@ -1,5 +1,6 @@
 "use client";
 import MyRequestRow from "@/components/modules/bloodRequest/MyRequestRow";
+import MyRequestRowSkeleton from "@/components/modules/bloodRequest/MyRequestRowSkeleton";
 import ReuseAblePagination from "@/components/modules/global/ReuseAblePagination";
 import { useDebounce, useGetMe, useMyBloodRequests } from "@/hooks";
 import type { BloodGroupList, IBloodRequest } from "@/types";
@@ -98,8 +99,15 @@ const MyRequestsPage = () => {
       </div>
 
       {userDataLoading ? (
-        // -----loading skeleton
-        <div className="h-[320px] animate-pulse rounded-2xl border border-[#E3E5EA] bg-white" />
+        // -----loading skeleton (filter box + rows)
+        <>
+          <div className="h-[82px] animate-pulse rounded-2xl border border-[#E3E5EA] bg-white" />
+          <ul className="flex flex-col gap-3">
+            {[1, 2, 3, 4, 5].map((item) => (
+              <MyRequestRowSkeleton key={item} />
+            ))}
+          </ul>
+        </>
       ) : !user ? (
         // -----not logged in
         <div className="flex flex-col items-start gap-4 rounded-[20px] border border-[#E3E5EA] bg-white p-6 sm:p-8">
@@ -185,14 +193,12 @@ const MyRequestsPage = () => {
 
           {/* ------list */}
           {myRequestsLoading ? (
-            <div className="flex flex-col gap-3">
-              {[1, 2, 3].map((item) => (
-                <div
-                  key={item}
-                  className="h-24 animate-pulse rounded-[18px] border border-[#E3E5EA] bg-white"
-                />
+            // -----row skeletons
+            <ul className="flex flex-col gap-3">
+              {[1, 2, 3, 4, 5].map((item) => (
+                <MyRequestRowSkeleton key={item} />
               ))}
-            </div>
+            </ul>
           ) : myRequestsData?.data.length === 0 ? (
             // -----empty
             <div className="flex flex-col items-center gap-4 rounded-[20px] border border-[#E3E5EA] bg-white px-4 py-12 text-center">

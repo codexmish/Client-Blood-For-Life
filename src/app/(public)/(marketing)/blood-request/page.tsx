@@ -1,5 +1,6 @@
 "use client";
 import BloodRequestCard from "@/components/modules/bloodRequest/BloodRequestCard";
+import BloodRequestCardSkeleton from "@/components/modules/bloodRequest/BloodRequestCardSkeleton";
 import ReuseAblePagination from "@/components/modules/global/ReuseAblePagination";
 import { useBloodRequwsts, useDebounce, useGetMe } from "@/hooks";
 import type { BloodGroupList, IBloodRequest, UrgencyList } from "@/types";
@@ -107,8 +108,15 @@ const BloodRequestPage = () => {
       </div>
 
       {userDataLoading ? (
-        // -----loading skeleton
-        <div className="h-[320px] animate-pulse rounded-2xl border border-[#E3E5EA] bg-white" />
+        // -----loading skeleton (filter box + cards)
+        <>
+          <div className="h-[82px] animate-pulse rounded-2xl border border-[#E3E5EA] bg-white" />
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,340px),1fr))] justify-items-center gap-[18px]">
+            {[1, 2, 3, 4, 5].map((item) => (
+              <BloodRequestCardSkeleton key={item} />
+            ))}
+          </div>
+        </>
       ) : !user ? (
         // -----not logged in
         <div className="flex flex-col items-start gap-4 rounded-[20px] border border-[#E3E5EA] bg-white p-6 sm:p-8">
@@ -245,7 +253,12 @@ const BloodRequestPage = () => {
 
           {/* ------cards */}
           {bloodRequestsDataLoading ? (
-            <p className="py-10 text-center text-[#5B616E]">Loading...</p>
+            // -----card skeletons (same grid as cards)
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,340px),1fr))] justify-items-center gap-[18px]">
+              {[1, 2, 3, 4, 5].map((item) => (
+                <BloodRequestCardSkeleton key={item} />
+              ))}
+            </div>
           ) : bloodRequestsData?.data.length === 0 ? (
             <p className="rounded-2xl bg-white px-4 py-10 text-center text-[#5B616E]">
               No request matches these filters.

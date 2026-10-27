@@ -82,13 +82,22 @@ const Banner = () => {
         </div>
 
         {publicDonationLoading ? (
-          // -----loading skeleton
-          [1, 2, 3].map((item) => (
-            <div
-              key={item}
-              className="h-[86px] animate-pulse rounded-[14px] bg-[#F4F5F7]"
-            />
-          ))
+          // -----loading skeleton (same shape as a row)
+          <div aria-hidden="true" className="flex flex-col gap-3">
+            {[1, 2, 3, 4].map((item) => (
+              <div
+                key={item}
+                className="flex items-center gap-3.5 rounded-[14px] border border-[#E3E5EA] p-3.5"
+              >
+                <span className="size-14 flex-none animate-pulse rounded-[14px] bg-[#EEF0F3]" />
+                <span className="flex flex-1 flex-col gap-2">
+                  <span className="h-4 w-32 animate-pulse rounded-md bg-[#EEF0F3]" />
+                  <span className="h-3.5 w-24 animate-pulse rounded-md bg-[#EEF0F3]" />
+                </span>
+                <span className="h-3.5 w-20 flex-none animate-pulse rounded-md bg-[#EEF0F3]" />
+              </div>
+            ))}
+          </div>
         ) : donationData.length === 0 ? (
           // -----no donation yet
           <p className="rounded-[14px] bg-[#F4F5F7] px-4 py-8 text-center text-[15px] text-[#5B616E]">

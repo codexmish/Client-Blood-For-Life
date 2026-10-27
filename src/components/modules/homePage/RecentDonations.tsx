@@ -43,7 +43,7 @@ const RecentDonations = () => {
           <div className="flex gap-8 pt-2">
             <div className="flex flex-col gap-1">
               {publicDonationLoading ? (
-                <span className="h-10 w-16 animate-pulse rounded-lg bg-[#22252C]" />
+                <span className="h-10 w-16 animate-pulse rounded-lg bg-[#2F333C]" />
               ) : (
                 <span className="text-[40px] font-bold leading-none">
                   {recentBags}
@@ -55,7 +55,7 @@ const RecentDonations = () => {
             </div>
             <div className="flex flex-col gap-1">
               {publicDonationLoading ? (
-                <span className="h-10 w-16 animate-pulse rounded-lg bg-[#22252C]" />
+                <span className="h-10 w-16 animate-pulse rounded-lg bg-[#2F333C]" />
               ) : (
                 <span className="text-[40px] font-bold leading-none">
                   {totalRequests}
@@ -69,13 +69,17 @@ const RecentDonations = () => {
         {/* ------right side list */}
         <div className="min-w-0 flex-[1_1_480px]">
           {publicDonationLoading ? (
-            // -----loading skeleton
-            <div className="flex flex-col gap-2.5">
+            // -----loading skeleton (same shape as a row)
+            <div aria-hidden="true" className="flex flex-col gap-2.5">
               {[1, 2, 3, 4, 5].map((item) => (
                 <div
                   key={item}
-                  className="h-[72px] animate-pulse rounded-[14px] bg-[#22252C]"
-                />
+                  className="flex items-center gap-4 rounded-[14px] bg-[#22252C] px-[18px] py-3.5"
+                >
+                  <span className="h-11 w-[52px] flex-none animate-pulse rounded-[10px] bg-[#2F333C]" />
+                  <span className="h-4 w-16 flex-1 animate-pulse rounded-md bg-[#2F333C] sm:flex-none" />
+                  <span className="ml-auto h-3.5 w-24 flex-none animate-pulse rounded-md bg-[#2F333C]" />
+                </div>
               ))}
             </div>
           ) : donationData.length === 0 ? (
