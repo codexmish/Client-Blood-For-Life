@@ -18,30 +18,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Spinner } from "../../ui/spinner";
 import { toast } from "../../ui/toast";
-
-// -----blood group label for showing
-const bloodGroupLabel: Record<string, string> = {
-  A_POSITIVE: "A+",
-  A_NEGATIVE: "A−",
-  B_POSITIVE: "B+",
-  B_NEGATIVE: "B−",
-  AB_POSITIVE: "AB+",
-  AB_NEGATIVE: "AB−",
-  O_POSITIVE: "O+",
-  O_NEGATIVE: "O−",
-};
-
-// -----badge colors
-const urgencyStyle: Record<string, string> = {
-  EMERGENCY: "bg-[#B4232A] text-white",
-  URGENT: "bg-[#FFF1D6] text-[#7A4B00]",
-  NORMAL: "bg-[#EEF0F3] text-[#3B404B]",
-};
-const statusStyle: Record<string, string> = {
-  OPEN: "bg-[#E6F2EC] text-[#1D5E40]",
-  FULFILLED: "bg-[#E8EEFB] text-[#23448F]",
-  CANCELLED: "bg-[#EEF0F3] text-[#3B404B]",
-};
+import { bloodGroupLabel, statusStyle, urgencyStyle } from "@/utils";
 
 // -----design classes
 const cardClass =

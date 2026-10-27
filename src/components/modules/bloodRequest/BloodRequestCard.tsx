@@ -1,6 +1,7 @@
 import type { IBloodRequest } from "@/types";
 import { Phone } from "lucide-react";
 import Link from "next/link";
+import { bloodGroupLabel, neededDay, shortName, urgencyStyle } from "@/utils";
 
 // -----props this card needs
 type TBloodRequestCardProps = Pick<
@@ -15,47 +16,6 @@ type TBloodRequestCardProps = Pick<
   | "patientName"
   | "phoneNumber"
 >;
-
-// -----blood group label for showing
-const bloodGroupLabel: Record<string, string> = {
-  A_POSITIVE: "A+",
-  A_NEGATIVE: "A−",
-  B_POSITIVE: "B+",
-  B_NEGATIVE: "B−",
-  AB_POSITIVE: "AB+",
-  AB_NEGATIVE: "AB−",
-  O_POSITIVE: "O+",
-  O_NEGATIVE: "O−",
-};
-
-// -----urgency badge colors
-const badgeStyle: Record<string, string> = {
-  EMERGENCY: "bg-[#B4232A] text-white",
-  URGENT: "bg-[#FFF1D6] text-[#7A4B00]",
-  NORMAL: "bg-[#EEF0F3] text-[#3B404B]",
-};
-
-// -----needed date as Today / Tomorrow / 20 Oct
-const neededDay = (date: string) => {
-  const needDate = new Date(date);
-  const today = new Date();
-  const tomorrow = new Date();
-  tomorrow.setDate(today.getDate() + 1);
-
-  if (needDate.toDateString() === today.toDateString()) return "Today";
-  if (needDate.toDateString() === tomorrow.toDateString()) return "Tomorrow";
-  return needDate.toLocaleDateString("en-GB", {
-    day: "numeric",
-    month: "short",
-  });
-};
-
-// -----patient name as Rahim U.
-const shortName = (name: string) => {
-  const [first, ...rest] = name.trim().split(" ");
-  const last = rest.at(-1);
-  return last ? `${first} ${last[0]}.` : first;
-};
 
 const BloodRequestCard = ({
   bloodGroup,
@@ -76,7 +36,7 @@ const BloodRequestCard = ({
           {bloodGroupLabel[bloodGroup] ?? bloodGroup}
         </span>
         <span
-          className={`inline-flex h-[26px] items-center rounded-full px-2.5 text-xs font-bold ${badgeStyle[urgency]}`}
+          className={`inline-flex h-[26px] items-center rounded-full px-2.5 text-xs font-bold ${urgencyStyle[urgency]}`}
         >
           {urgency}
         </span>
