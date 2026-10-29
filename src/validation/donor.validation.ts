@@ -26,3 +26,6 @@ export const registerDonorSchema = z.object({
 
   agree: z.boolean().refine((value) => value, "Please confirm to continue"),
 });
+
+// -----update donor details validation (same fields, no confirm box)
+export const updateDonorSchema = registerDonorSchema.omit({ agree: true });

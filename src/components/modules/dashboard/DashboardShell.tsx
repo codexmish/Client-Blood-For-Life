@@ -12,18 +12,25 @@ import { toast } from "../../ui/toast";
 
 // -----sidebar links by role
 const sidebarLinks = (user: IUser) => {
-  const links = [
+  // ----donor dashboard
+  if (user.donor) {
+    return [
+      { label: "Overview", href: "/dashboard" },
+      { label: "Donor details", href: "/dashboard/donor-details" },
+      { label: "My commitments", href: "/dashboard#commitments" },
+      { label: "Donation history", href: "/dashboard#history" },
+      { label: "My requests", href: "/my-requests" },
+      { label: "Profile & password", href: "/dashboard/profile" },
+    ];
+  }
+
+  // ----not a donor yet
+  return [
     { label: "Profile", href: "/dashboard/profile" },
     { label: "Password", href: "/dashboard/profile#password" },
     { label: "My requests", href: "/my-requests" },
+    { label: "Become a donor", href: "/become-donor" },
   ];
-
-  // ----only for people who are not donor yet
-  if (!user.donor) {
-    links.push({ label: "Become a donor", href: "/become-donor" });
-  }
-
-  return links;
 };
 
 const DashboardShell = ({ children }: { children: ReactNode }) => {

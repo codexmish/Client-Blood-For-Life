@@ -27,7 +27,7 @@ const donorLinks = [
   { label: "Blood requests", href: "/blood-request" },
   { label: "My requests", href: "/my-requests" },
   { label: "Find donors", href: "/donors" },
-  { label: "My dashboard", href: "/dashboard/profile" },
+  { label: "My dashboard", href: "/dashboard" },
 ];
 
 // -----menu link list (pathname given = active link highlighted)

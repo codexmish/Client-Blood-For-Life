@@ -1,4 +1,10 @@
-import { getDonors, getSingleDonor, registerDonor } from "@/api";
+import {
+  getDonors,
+  getSingleDonor,
+  registerDonor,
+  updateAvailability,
+  updateDonor,
+} from "@/api";
 import type { IDonorQuery } from "@/types";
 import {
   keepPreviousData,
@@ -6,6 +12,34 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+
+// -----turn availability on or off
+export function useUpdateAvailability() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateAvailability,
+    onSuccess: () => {
+      // ----user.donor.isAvailable changed, donor list changes too
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["donors"] });
+    },
+  });
+}
+
+// -----update donor details
+export function useUpdateDonor() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateDonor,
+    onSuccess: () => {
+      // ----last donation date changes eligibility
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.invalidateQueries({ queryKey: ["donors"] });
+    },
+  });
+}
 
 // -----register as donor
 export function useRegisterDonor() {

@@ -19,3 +19,8 @@ export function donateToRequest(requestId: string) {
 export function leaveRequest(requestId: string) {
   return apiClient(`/donation/${requestId}`, { method: "DELETE" });
 }
+
+// ------my completed donations
+export function getMyDonations(page: number) {
+  return apiClient("/donation/my-donations", { query: { page } });
+}

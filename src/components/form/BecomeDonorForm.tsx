@@ -54,7 +54,7 @@ const BecomeDonorForm = ({ canSubmit }: { canSubmit: boolean }) => {
             description: "Thank you for joining",
             type: "success",
           });
-          router.push("/dashboard/profile");
+          router.push("/dashboard");
         },
         onError: (err) => {
           toast.add({

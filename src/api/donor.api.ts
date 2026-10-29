@@ -15,3 +15,16 @@ export function getDonors(query: IDonorQuery) {
 export function getSingleDonor(id: string) {
   return apiClient(`/donor/${id}`);
 }
+
+// -----turn availability on or off
+export function updateAvailability(isAvailable: boolean) {
+  return apiClient("/donor/me/availability", {
+    method: "PATCH",
+    body: { isAvailable },
+  });
+}
+
+// -----update weight, last donation date, health note
+export function updateDonor(payload: IRegisterDonor) {
+  return apiClient("/donor/me", { method: "PATCH", body: payload });
+}

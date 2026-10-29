@@ -1,10 +1,27 @@
 import {
   donateToRequest,
   getMyCommitments,
+  getMyDonations,
   leaveRequest,
   publicDonatioin,
 } from "@/api";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+
+// -----my completed donations (only call when user is donor)
+export function useMyDonations(page: number, enabled: boolean) {
+  return useQuery({
+    queryKey: ["myDonations", page],
+    queryFn: () => getMyDonations(page),
+    placeholderData: keepPreviousData,
+    enabled,
+    retry: false,
+  });
+}
 
 // -----public donations
 export function usePublicDonation() {
