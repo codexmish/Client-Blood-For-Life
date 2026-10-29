@@ -16,6 +16,16 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  // -----browser calls /api/v1 on our own domain, next sends it to backend
+  // ----so login cookies are saved for our domain (first-party, not blocked)
+  async rewrites() {
+    return [
+      {
+        source: "/api/v1/:path*",
+        destination: "https://backend-blood-for-life.vercel.app/api/v1/:path*",
+      },
+    ];
+  },
 };
 
 export default nextConfig;
