@@ -8,12 +8,17 @@ import {
   userSignUp,
   userVerify,
 } from "@/api";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 // ------user sign in
 export function useSignin() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: userSignIn,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
   });
 }
 
@@ -26,8 +31,13 @@ export function useSignup() {
 
 // ------otp verify
 export function useOtpVerify() {
+  const queryClient = useQueryClient();
+
   return useMutation({
     mutationFn: userVerify,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+    },
   });
 }
 
