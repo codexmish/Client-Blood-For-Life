@@ -26,15 +26,16 @@ const FindDonor = () => {
         {/* ------blood group buttons */}
         <div className="grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-3">
           {bloodGroups.map((item) => (
-            <div
+            <Link
               key={item.value}
+              href={`/donors?bloodGroup=${item.value}`}
               className="flex min-h-[88px] flex-col items-center justify-center gap-0.5 rounded-[14px] border border-[#E3E5EA] bg-white text-[#15171C] transition-colors hover:border-[#B4232A] hover:bg-[#FBEAEA]/40"
             >
               <span className="text-[26px] font-bold text-[#8E1A20]">
                 {item.label}
               </span>
               <span className="text-[13px] text-[#5B616E]">Find donors</span>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
