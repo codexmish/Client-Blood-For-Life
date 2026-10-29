@@ -5,7 +5,12 @@ import DonationHistory from "@/components/modules/dashboard/DonationHistory";
 import MyCommitments from "@/components/modules/dashboard/MyCommitments";
 import { useGetMe } from "@/hooks";
 import type { IUser } from "@/types";
-import { bloodGroupLabel, initialsOf, nextDonationDate } from "@/utils";
+import {
+  bloodGroupLabel,
+  initialsOf,
+  isAdmin,
+  nextDonationDate,
+} from "@/utils";
 import Link from "next/link";
 
 // -----design classes
@@ -28,8 +33,28 @@ const DashboardOverviewPage = () => {
 
   if (!user) return null;
 
+  // -----admin has no donor dashboard
+  if (isAdmin(user.role)) {
+    return (
+      <section className="flex flex-col items-start gap-4 rounded-[18px] border border-[#E3E5EA] bg-white p-6 sm:p-8">
+        <h1 className="text-[28px] font-bold tracking-[-0.02em] text-[#15171C]">
+          Admin dashboard
+        </h1>
+        <p className="text-[#5B616E]">
+          See every recorded donation with full details.
+        </p>
+        <Link
+          href="/dashboard/admin"
+          className="inline-flex h-12 items-center justify-center rounded-[10px] bg-[#B4232A] px-[22px] text-[15px] font-semibold text-white transition-colors hover:bg-[#951C22]"
+        >
+          Open donation report
+        </Link>
+      </section>
+    );
+  }
+
   // -----not a donor yet
-  if (!user.donor) {
+  if (user.role !== "DONOR" || !user.donor) {
     return (
       <section className="flex flex-col items-start gap-4 rounded-[18px] border border-[#E3E5EA] bg-white p-6 sm:p-8">
         <h1 className="text-[28px] font-bold tracking-[-0.02em] text-[#15171C]">

@@ -16,8 +16,8 @@ const DonorDetailsPage = () => {
 
   if (!user) return null;
 
-  // -----only donors have donor details
-  if (!user.donor) {
+  // -----only donors have donor details (admin may still have a donor profile)
+  if (user.role !== "DONOR" || !user.donor) {
     return (
       <section className={`${cardClass} flex flex-col items-start gap-4`}>
         <h1 className="text-[28px] font-bold tracking-[-0.02em] text-[#15171C]">

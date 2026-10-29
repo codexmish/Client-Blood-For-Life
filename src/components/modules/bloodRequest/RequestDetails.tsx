@@ -18,7 +18,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Spinner } from "../../ui/spinner";
 import { toast } from "../../ui/toast";
-import { bloodGroupLabel, statusStyle, urgencyStyle } from "@/utils";
+import { bloodGroupLabel, isAdmin, statusStyle, urgencyStyle } from "@/utils";
 
 // -----design classes
 const cardClass =
@@ -51,7 +51,8 @@ const RequestDetails = () => {
   // -----logged in user
   const { data: userData, isLoading: userDataLoading } = useGetMe();
   const user = userData?.data;
-  const donor = user?.donor;
+  // ----donor only when role is DONOR (admin may still have a donor profile)
+  const donor = user?.role === "DONOR" ? user.donor : null;
 
   // -----request data
   const {
@@ -213,7 +214,9 @@ const RequestDetails = () => {
 
   // -----why this donor can't join (null = can join)
   let cantJoinReason: string | null = null;
-  if (!donor) cantJoinReason = "notDonor";
+  if (isAdmin(user.role))
+    cantJoinReason = "Admin accounts can’t commit to requests.";
+  else if (!donor) cantJoinReason = "notDonor";
   else if (user.bloodGroup !== request.bloodGroup)
     cantJoinReason = `This request needs ${groupLabel} blood. Your blood group is different.`;
   else if (!donor.isAvailable)

@@ -8,6 +8,7 @@ import { LogOut, UserRound } from "lucide-react";
 import { Menu } from "@base-ui/react/menu";
 import { usePathname } from "next/navigation";
 import { Suspense } from "react";
+import { isAdmin } from "@/utils";
 
 // -----menu items
 const navLinks = [
@@ -28,6 +29,13 @@ const donorLinks = [
   { label: "My requests", href: "/my-requests" },
   { label: "Find donors", href: "/donors" },
   { label: "My dashboard", href: "/dashboard" },
+];
+
+// -----menu items for admin
+const adminLinks = [
+  { label: "Blood requests", href: "/blood-request" },
+  { label: "Find donors", href: "/donors" },
+  { label: "Admin", href: "/dashboard/admin" },
 ];
 
 // -----menu link list (pathname given = active link highlighted)
@@ -78,8 +86,16 @@ const Navbar = () => {
   // -----user info for showing
   const user = userData?.data;
 
-  const isDonor = !!user?.donor;
-  const menuLinks = user ? (isDonor ? donorLinks : recipientLinks) : navLinks;
+  // ----role decides, admin may still have a donor profile
+  const isAdminUser = isAdmin(user?.role);
+  const isDonor = user?.role === "DONOR";
+  const menuLinks = !user
+    ? navLinks
+    : isAdminUser
+      ? adminLinks
+      : isDonor
+        ? donorLinks
+        : recipientLinks;
   const initials = user?.name
     ?.split(" ")
     .map((word: string) => word[0])
@@ -160,7 +176,7 @@ const Navbar = () => {
         ) : user ? (
           // -----after login
           <div className="flex items-center gap-2.5">
-            {!isDonor && (
+            {!isDonor && !isAdminUser && (
               <Link
                 href="/become-donor"
                 className="inline-flex h-11 items-center justify-center rounded-[10px] bg-[#B4232A] px-4 text-[15px] font-semibold text-white transition-colors hover:bg-[#951C22] sm:px-[18px]"

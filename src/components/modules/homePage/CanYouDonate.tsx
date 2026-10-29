@@ -1,6 +1,7 @@
 "use client";
 
 import { useGetMe } from "@/hooks";
+import { isAdmin } from "@/utils";
 import Link from "next/link";
 
 // -----donate rules
@@ -14,7 +15,9 @@ const CanYouDonate = () => {
   // -----checking login
   const { data: userData, isLoading: userDataLoading } = useGetMe();
   const user = userData?.data;
-  const isDonor = !!user?.donor;
+  // ----role decides, admin may still have a donor profile
+  const isAdminUser = isAdmin(user?.role);
+  const isDonor = user?.role === "DONOR";
 
   return (
     <section className="mx-auto max-w-[1200px] px-4 py-12 sm:px-6 md:py-[72px]">
@@ -30,11 +33,13 @@ const CanYouDonate = () => {
             ))}
           </ul>
           <p className="text-[15px] text-[#5B616E]">
-            {isDonor
-              ? "You are already a donor. Keep your availability up to date."
-              : user
-                ? "Turn on donor mode so people who need your blood group can find you."
-                : "Create an account, then turn on donor mode from your profile."}
+            {isAdminUser
+              ? "You manage the platform. See every recorded donation."
+              : isDonor
+                ? "You are already a donor. Keep your availability up to date."
+                : user
+                  ? "Turn on donor mode so people who need your blood group can find you."
+                  : "Create an account, then turn on donor mode from your profile."}
           </p>
         </div>
 
@@ -45,14 +50,24 @@ const CanYouDonate = () => {
             <div className="h-[52px] w-48 animate-pulse rounded-[10px] bg-[#E9EBEF]" />
           ) : (
             <Link
-              href={isDonor ? "/dashboard" : user ? "/become-donor" : "/signup"}
+              href={
+                isAdminUser
+                  ? "/dashboard/admin"
+                  : isDonor
+                    ? "/dashboard"
+                    : user
+                      ? "/become-donor"
+                      : "/signup"
+              }
               className="inline-flex h-[52px] items-center justify-center rounded-[10px] bg-[#B4232A] px-6 text-[15px] font-semibold text-white transition-colors hover:bg-[#951C22]"
             >
-              {isDonor
-                ? "Go to dashboard"
-                : user
-                  ? "Become a donor"
-                  : "Create an account"}
+              {isAdminUser
+                ? "Donation report"
+                : isDonor
+                  ? "Go to dashboard"
+                  : user
+                    ? "Become a donor"
+                    : "Create an account"}
             </Link>
           )}
         </div>

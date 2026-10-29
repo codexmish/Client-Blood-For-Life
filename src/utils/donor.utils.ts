@@ -24,3 +24,7 @@ export const nextDonationDate = (lastDonationDate: string | null) => {
   next.setMonth(next.getMonth() + 4);
   return next > new Date() ? next : null;
 };
+
+// -----admin or super admin
+export const isAdmin = (role?: string) =>
+  role === "ADMIN" || role === "SUPER_ADMIN";

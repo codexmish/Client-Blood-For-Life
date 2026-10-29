@@ -2,7 +2,7 @@
 
 import { useGetMe, useLogout } from "@/hooks";
 import type { IUser } from "@/types";
-import { errorMessage } from "@/utils";
+import { errorMessage, isAdmin } from "@/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { LogOut } from "lucide-react";
 import Link from "next/link";
@@ -12,8 +12,16 @@ import { toast } from "../../ui/toast";
 
 // -----sidebar links by role
 const sidebarLinks = (user: IUser) => {
+  // ----admin dashboard
+  if (isAdmin(user.role)) {
+    return [
+      { label: "Donation report", href: "/dashboard/admin" },
+      { label: "Profile & password", href: "/dashboard/profile" },
+    ];
+  }
+
   // ----donor dashboard
-  if (user.donor) {
+  if (user.role === "DONOR") {
     return [
       { label: "Overview", href: "/dashboard" },
       { label: "Donor details", href: "/dashboard/donor-details" },
